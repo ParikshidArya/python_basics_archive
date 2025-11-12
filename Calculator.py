@@ -1,20 +1,24 @@
 def number_entry():
-
-    global nlist
+    '''
+    This function deals with number entry and pushes numbers entered into a list
+    '''
     nlist = []
 
-    
-    number = (input('enter number:'))
 
-    try:
-        number = int(number)
-        nlist.append(number)
-    except:
-        print("error, please enter numeric values only")
-        #exit()
+    while True: #loop to prevent ghost entries
 
+        number = (input('enter number:'))
+
+        try:
+            number = int(number)
+            nlist.append(number)
+            break
+        except:
+            print("error, please enter numeric values only")
+            
 
     while True:
+
         n_entry = input('do you wanna enter any more numbers? yes/no?')
         if n_entry == 'yes':
             try:
@@ -26,21 +30,28 @@ def number_entry():
             break
         else:
             print("please enter yes or no only.")
-            #exit()
+    return nlist
+            
 
 def operator_entry():
-
+    '''
+    This function deals with operator entry, pushing operators in string form into a list
+    '''
     first_op = input('enter operator:')
-    global op_list
     op_list = []
 
-    if first_op  in ['+', '-', '*','/']:
-        op_list.append(first_op)
-    else:
-        print(f'please enter valid operator:')
-        exit()
+
+    while True: #loop to prevent ghost entries
+
+        if first_op  in ['+', '-', '*','/']:
+            op_list.append(first_op)
+            break
+        else:
+            first_op = input('please enter a valid operator:')
+        
 
     while True:
+
         nops = input('do you wanna enter another operation? yes or no?:')
         if nops == 'yes':
             op = input('enter operator:')
@@ -49,19 +60,18 @@ def operator_entry():
             else:
                 print("please enter valid operator.")
                 break
-
         elif nops == 'no':
             break
-
         else:
             print("enter yes/no only.")
+            
+    return op_list
     
 
-def calculation():
-
-    global soln
-    global result
-    global lo, ln
+def calculation(nlist, op_list):
+    '''
+    This function calculates the result of the numbers and operators
+    '''
     result = nlist[0]
 
     lo = len(op_list)
@@ -76,12 +86,10 @@ def calculation():
             
             if op_list[i] == '+':
                 result = result + nlist[i+1]
-        
             elif op_list[i] == '-':
                 result = result - nlist[i+1]
-            
             elif op_list[i] == '/':
-                if nlist[i] != 0 and nlist[i+1] == 0:
+                if nlist[i+1] == 0:
                     print('division by zero is not feasible')
                     return
                 elif nlist[i] == 0 and nlist[i+1] != 0:
@@ -89,7 +97,6 @@ def calculation():
                     return
                 else:
                     result = result / nlist[i+1]
-            
             elif op_list[i] == '*':
                 result = result * nlist[i+1]
             
@@ -99,41 +106,12 @@ def calculation():
 
 
 def calculator():
-    number_entry()
-    operator_entry()
-    calculation()
+    '''
+    This function calls all functions
+    '''
+    nlist = number_entry()
+    op_list = operator_entry()
+    calculation(nlist,op_list)
 
-calculator()
-
-
-
-'''
-#for i in range 0, 
-
-def calc(x,y):
-    operation = input("Enter operator ( +, - , / , * ) :")
-    if operation == "+":
-        soln = x + y
-        print(f'the solution is : {soln}')
-
-    elif operation == "-":
-        soln = x - y
-        print(f'the solution is : {soln}')
-
-    elif operation == "/":
-        soln = x / y
-        print(f'the solution is : {soln}')
-
-    elif operation == "*":
-        soln = x * y
-        print(f'the solution is : {soln}')
-
-    else:
-        print("enter valid operation from specified options.")
-
-if valid_input == True:
-    calc(num1,num2)
-else:
-    print("could not call function due to valueerror")
-
-'''
+if __name__ == "__main__": #only runs the file when executed directly. so no import issues.
+    calculator()
